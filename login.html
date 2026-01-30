@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Login | Secure Gateway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; }
+        .login-card { background: #111113; border: 1px solid #27272a; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .input-group input { background: #09090b; border: 1px solid #27272a; transition: all 0.2s; }
+        .input-group input:focus { border-color: #6366f1; outline: none; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+
+    <div class="w-full max-w-sm space-y-8">
+        <div class="text-center">
+            <h1 class="text-2xl font-semibold tracking-tight">Partner Login</h1>
+            <p class="text-sm text-zinc-500 mt-2">Enter your credentials to access your dashboard</p>
+        </div>
+
+        <div class="login-card rounded-2xl p-8 space-y-6">
+            <form id="login-form" class="space-y-4">
+                <div class="input-group space-y-2">
+                    <label class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Partner ID</label>
+                    <input type="text" id="refId" required placeholder="REF1234"
+                        class="w-full rounded-lg px-4 py-3 text-sm text-white placeholder:text-zinc-600">
+                </div>
+
+                <div class="input-group space-y-2">
+                    <label class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Password</label>
+                    <input type="password" id="password" required placeholder="••••••••"
+                        class="w-full rounded-lg px-4 py-3 text-sm text-white placeholder:text-zinc-600">
+                </div>
+
+                <div id="error-msg" class="text-red-400 text-xs hidden">Invalid Partner ID or Password.</div>
+
+                <button type="submit" id="login-btn" class="w-full bg-white text-black font-semibold py-3 rounded-lg hover:bg-zinc-200 transition-colors active:scale-[0.98]">
+                    Sign In
+                </button>
+            </form>
+        </div>
+
+        <p class="text-center text-sm text-zinc-500">
+            Don't have an account? <a href="signup.html" class="text-white hover:underline">Apply here</a>
+        </p>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBhpgLX6S324G_FWxb7SU0aihH9ql_DC_nHxW6DTe6-3P4YDNujocr2bbnSLfAZUzs7Q/exec'; // Replace after deployment
+
+        document.getElementById('login-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const refId = document.getElementById('refId').value.trim();
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('login-btn');
+            const error = document.getElementById('error-msg');
+
+            error.classList.add('hidden');
+            btn.disabled = true;
+            btn.innerText = 'Verifying...';
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('refId', refId);
+                formData.append('password', password);
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // Store credentials for dashboard use
+                    sessionStorage.setItem('partnerRefId', refId);
+                    sessionStorage.setItem('partnerEmail', result.email);
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    error.classList.remove('hidden');
+                    resetBtn();
+                }
+            } catch (err) {
+                error.innerText = 'Connection error. Check backend deployment.';
+                error.classList.remove('hidden');
+                resetBtn();
+            }
+        };
+
+        function resetBtn() {
+            const btn = document.getElementById('login-btn');
+            btn.disabled = false;
+            btn.innerText = 'Sign In';
+        }
+    </script>
+</body>
+</html>

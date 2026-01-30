@@ -1,0 +1,96 @@
+To make each page a separate project, you will need to deploy **four distinct Google Apps Script Web Apps**. Each project will have its own `.gs` file (the server) and its own `.html` file (the UI).
+
+I have organized the prompts below so that each "Project" is self-contained with its own specific logic.
+
+### Project 1: User Payment Portal
+
+**Files:** `payment.html`, `payment.gs`
+**Goal:** Handles the 9-minute timer, wallet rotation, and customer-facing UI.
+
+* **UI Prompt:** "Create a single-file React-style HTML/JS page for a crypto payment gateway. It must detect `ref` and `amt` from the URL. Include a 9-minute countdown timer using localStorage persistence, a dynamic QR code generator, and a 'Submit TxID' form. Style it with a premium dark-mode Web3 aesthetic using Tailwind CSS."
+* **Backend Prompt:** "Write a Google Apps Script `doPost` function for a Payment Portal. It must open Spreadsheet ID `1ezLgZmqSZR2lbiLNDvzltFlEHBzka6pMgCVxSdR94Ns`. Logic: Find the 'Least Recently Used' wallet from the 'Wallets' tab, log a new session in 'Sessions', and send an email alert to the partner associated with the `ref` ID. Return the wallet and expiry time as JSON."
+
+### Project 2: Partner Signup System
+
+**Files:** `signup.html`, `signup.gs`
+**Goal:** Automates the onboarding of new referrers.
+
+* **UI Prompt:** "Create a professional 'Partner Onboarding' page. Include a form for Email and Password. Upon a successful API response, display a 'Success' card that shows the user's new Referral ID and a pre-formatted link they can copy: `https://your-site.com/pay?ref=ID`."
+* **Backend Prompt:** "Write a Google Apps Script for a Signup System. When it receives a POST request with an email and password, check the 'Partners' tab for duplicates. If unique, generate a random 4-digit 'REF' ID, save the partner's data to the sheet, and return the new ID to the user."
+
+### Project 3: Partner Login & Authentication
+
+**Files:** `login.html`, `login.gs`
+**Goal:** A secure gatekeeper for the dashboard.
+
+* **UI Prompt:** "Create a minimalist login page for a partner network. It should have fields for 'Partner ID' and 'Password'. On success, it should store the credentials in `sessionStorage` and redirect the user to the dashboard URL."
+* **Backend Prompt:** "Write a Google Apps Script that validates partner credentials. It should look up the 'Partner ID' in the 'Partners' tab of Spreadsheet `1ezLgZmqSZR2lbiLNDvzltFlEHBzka6pMgCVxSdR94Ns`. If the password matches, return a 'Success' status. Otherwise, return a 401 Unauthorized error message."
+
+### Project 4: Partner Dashboard
+
+**Files:** `dashboard.html`, `dashboard.gs`
+**Goal:** The private area where partners view their specific logs.
+
+* **UI Prompt:** "Design a 'Partner Earnings Dashboard' using Tailwind CSS. It should fetch data from a backend and display it in a responsive table. Columns: Timestamp, User Email, Amount, and Transaction Hash. Add a 'Total Earned' counter at the top that sums up all verified payments."
+* **Backend Prompt:** "Write a Google Apps Script for a Dashboard API. It must accept a Partner ID. It should filter the 'Logs' tab of the spreadsheet for all rows matching that ID. Return the filtered list as a JSON array. Ensure it only returns the logs for that specific partner for security."
+
+---
+
+### Important: How to link them
+
+Since these are now **separate projects**, you will have 4 different Web App URLs.
+
+1. The **Signup UI** needs the URL of the **Signup GS**.
+2. The **Login UI** needs the URL of the **Login GS**.
+3. The **Dashboard UI** needs the URL of the **Dashboard GS**.
+4. The **Payment UI** needs the URL of the **Payment GS**.
+
+**Would you like me to generate the actual code files for one of these specific separate projects first?**
+To make each page a separate project, you will need to deploy **four distinct Google Apps Script Web Apps**. Each project will have its own `.gs` file (the server) and its own `.html` file (the UI).
+
+I have organized the prompts below so that each "Project" is self-contained with its own specific logic.
+
+### Project 1: User Payment Portal
+
+**Files:** `payment.html`, `payment.gs`
+**Goal:** Handles the 9-minute timer, wallet rotation, and customer-facing UI.
+
+* **UI Prompt:** "Create a single-file React-style HTML/JS page for a crypto payment gateway. It must detect `ref` and `amt` from the URL. Include a 9-minute countdown timer using localStorage persistence, a dynamic QR code generator, and a 'Submit TxID' form. Style it with a premium dark-mode Web3 aesthetic using Tailwind CSS."
+* **Backend Prompt:** "Write a Google Apps Script `doPost` function for a Payment Portal. It must open Spreadsheet ID `1ezLgZmqSZR2lbiLNDvzltFlEHBzka6pMgCVxSdR94Ns`. Logic: Find the 'Least Recently Used' wallet from the 'Wallets' tab, log a new session in 'Sessions', and send an email alert to the partner associated with the `ref` ID. Return the wallet and expiry time as JSON."
+
+### Project 2: Partner Signup System
+
+**Files:** `signup.html`, `signup.gs`
+**Goal:** Automates the onboarding of new referrers.
+
+* **UI Prompt:** "Create a professional 'Partner Onboarding' page. Include a form for Email and Password. Upon a successful API response, display a 'Success' card that shows the user's new Referral ID and a pre-formatted link they can copy: `https://your-site.com/pay?ref=ID`."
+* **Backend Prompt:** "Write a Google Apps Script for a Signup System. When it receives a POST request with an email and password, check the 'Partners' tab for duplicates. If unique, generate a random 4-digit 'REF' ID, save the partner's data to the sheet, and return the new ID to the user."
+
+### Project 3: Partner Login & Authentication
+
+**Files:** `login.html`, `login.gs`
+**Goal:** A secure gatekeeper for the dashboard.
+
+* **UI Prompt:** "Create a minimalist login page for a partner network. It should have fields for 'Partner ID' and 'Password'. On success, it should store the credentials in `sessionStorage` and redirect the user to the dashboard URL."
+* **Backend Prompt:** "Write a Google Apps Script that validates partner credentials. It should look up the 'Partner ID' in the 'Partners' tab of Spreadsheet `1ezLgZmqSZR2lbiLNDvzltFlEHBzka6pMgCVxSdR94Ns`. If the password matches, return a 'Success' status. Otherwise, return a 401 Unauthorized error message."
+
+### Project 4: Partner Dashboard
+
+**Files:** `dashboard.html`, `dashboard.gs`
+**Goal:** The private area where partners view their specific logs.
+
+* **UI Prompt:** "Design a 'Partner Earnings Dashboard' using Tailwind CSS. It should fetch data from a backend and display it in a responsive table. Columns: Timestamp, User Email, Amount, and Transaction Hash. Add a 'Total Earned' counter at the top that sums up all verified payments."
+* **Backend Prompt:** "Write a Google Apps Script for a Dashboard API. It must accept a Partner ID. It should filter the 'Logs' tab of the spreadsheet for all rows matching that ID. Return the filtered list as a JSON array. Ensure it only returns the logs for that specific partner for security."
+
+---
+
+### Important: How to link them
+
+Since these are now **separate projects**, you will have 4 different Web App URLs.
+
+1. The **Signup UI** needs the URL of the **Signup GS**.
+2. The **Login UI** needs the URL of the **Login GS**.
+3. The **Dashboard UI** needs the URL of the **Dashboard GS**.
+4. The **Payment UI** needs the URL of the **Payment GS**.
+
+**Would you like me to generate the actual code files for one of these specific separate projects first?**
